@@ -17,6 +17,7 @@ RUN pip install --no-cache-dir --upgrade pip && \
     opentelemetry-api \
     opentelemetry-sdk \
     opentelemetry-exporter-otlp \
+    opentelemetry-exporter-prometheus \
     prometheus_client
 
 # Створюємо структуру папок для шаблонів та конфігів
