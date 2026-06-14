@@ -1,6 +1,24 @@
 services:
+  # Представлено для розуміння мапінгу та мережі
+  syncthing:
+    image: syncthing/syncthing:latest
+    container_name: syncthing
+    networks:
+      - st_net
+    volumes:
+      - /music:/music # Твоя основна папка з музикою
+      - ./syncthing_config:/var/syncthing
+    ports:
+      - "8384:8384" # Web UI та REST API
+      - "22000:22000/tcp"
+      - "22000:22000/udp"
+    restart: unless-stopped
+
+  # Наш Sidecar-контейнер
   music-tagger:
-    image: ghcr.io/pervent/music-tagger:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: music-tagger
     networks:
       - st_net
