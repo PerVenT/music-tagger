@@ -1,0 +1,21 @@
+services:
+  music-tagger:
+    image: ghcr.io/pervent/music-tagger:latest
+    container_name: music-tagger
+    networks:
+      - st_net
+    depends_on:
+      - syncthing
+    env_file:
+      - .env
+    volumes:
+      - /music:/music:rw # Спільний доступ до медіатеки (читання/запис)
+      - ./tagger_config:/config:rw # Сховище для бази beets (library.db) та його config.yaml
+    ports:
+      - "8000:8000" # Порт для Prometheus метрик (/metrics)
+    restart: unless-stopped
+
+networks:
+  st_net:
+    driver: bridge
+    name: st_net

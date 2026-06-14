@@ -1,0 +1,30 @@
+# Шлях до SQLite бази даних, де Beets тримає внутрішній індекс
+directory: /music
+library: /config/library.db
+
+plugins: inline chroma mbsync
+
+# Налаштування автоматичного тихого імпорту
+import:
+  write: true          # Записувати нові теги безпосередньо у файл
+  move: true           # Дозволити перейменування (Beets трактує це як переміщення)
+  copy: false          # Не створювати дублікатів
+  quiet: true          # Повний автопілот без інтерактивних питань
+  autotag: true        # Ввімкнути пошук метаданих у MusicBrainz
+  timid: false         # Не просити підтвердження при низькому відсотку збігу
+
+# Динамічний Python код для inline-плагіна
+item_fields:
+  current_dir: |
+    import os
+    return os.path.dirname(item.path.decode('utf-8'))
+
+# Логіка іменування файлів (залишаємо в поточній папці)
+paths:
+  default: $current_dir/$artist - $title
+  singleton: $current_dir/$artist - $title
+  comp: $current_dir/$artist - $title
+
+# Параметри плагіна акустичних відбитків (як у Shazam)
+chroma:
+  auto: true
